@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tourism</string>
+    <string name="app_name">TripRoom</string>
     <string name="title">Login</string>
     <string name="message_login">Please sign in to continue</string>
     <string name="email_label">E-mail</string>
@@ -8,6 +8,11 @@
     <string name="dont_have">Don\'t have an account?</string>
     <string name="button_sign_up">Sign up</string>
     <string name="email_description">E-mail icon inside textfield</string>
+    <string name="phone_description">Phone icon inside textfield</string>
     <string name="password_description">Password icon inside textfield</string>
+    <string name="user_description">User icon inside textfield</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="text_create">Create a new account</string>
+    <string name="user_name">Username</string>
+    <string name="phone">Phone</string>
 </resources>

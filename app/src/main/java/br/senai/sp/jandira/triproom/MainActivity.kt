@@ -1,5 +1,7 @@
 package br.senai.sp.jandira.triproom
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,9 +25,10 @@ import br.senai.sp.jandira.triproom.ui.theme.TripRoomTheme
 
 class MainActivity : ComponentActivity() {
 
-    lateinit var context = LocalContext.current
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             TripRoomTheme {
                 // A surface container using the 'background' color from the theme
@@ -42,6 +45,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun LoginScreen() {
+
+    val context = LocalContext.current
+
+
     //Column principal
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
         //inicio da row da forma
@@ -76,6 +83,7 @@ fun LoginScreen() {
             .padding(16.dp),
             horizontalAlignment = Alignment.End
         ) {
+            Spacer(modifier = Modifier.height(8.dp))
             OutlinedTextField(
                 value = "", onValueChange = {},
                 modifier = Modifier.fillMaxWidth(),
@@ -89,7 +97,8 @@ fun LoginScreen() {
                         contentDescription = stringResource(id = R.string.email_description),
                         tint = Color(207,6,240)
                     )
-            })
+                }
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -107,25 +116,26 @@ fun LoginScreen() {
                         tint = Color(207,6,240)
                     )
                 })
-        }
 
-        Spacer(modifier = Modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
-        Button(onClick = { /*TODO*/ },
-            colors = ButtonDefaults.buttonColors(Color(207,6,246)),
-            shape = RoundedCornerShape(16.dp)
-        ) {
-            Row() {
-                Text(text = stringResource(id = R.string.button_sign_in).uppercase(),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White)
-                Icon(
-                    painter = painterResource(id = R.drawable.arrow_forward_24),
-                    contentDescription =  "",
-                    tint = Color.White)
+            Button(onClick = { /*TODO*/ },
+                colors = ButtonDefaults.buttonColors(Color(207,6,246)),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Row() {
+                    Text(text = stringResource(id = R.string.button_sign_in).uppercase(),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White)
+                    Icon(
+                        painter = painterResource(id = R.drawable.arrow_forward_24),
+                        contentDescription =  "",
+                        tint = Color.White)
 
+                }
             }
+
         } // fim da column formulario
         // inicio da row dont have account
         Row(modifier = Modifier
@@ -142,7 +152,8 @@ fun LoginScreen() {
             Text(
                 text = stringResource(id = R.string.button_sign_up),
                 modifier = Modifier.clickable {
-
+                    val intent = Intent(context,SignUpActivity::class.java)
+                    context.startActivity(intent)
                 },
                 fontSize = 14.sp,
                 color = Color(207, 6,246)
