@@ -143,7 +143,7 @@ fun SingupScreen() {
                 }
             )
 
-            Checkbox(checked = true, onCheckedChange = )
+//            Checkbox(checked = true, onCheckedChange = )
         }
     }
 
