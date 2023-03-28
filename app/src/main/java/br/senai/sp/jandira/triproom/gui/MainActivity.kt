@@ -1,11 +1,11 @@
 package br.senai.sp.jandira.triproom.gui
 
-import android.content.Context
+//import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
+//import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -121,7 +121,7 @@ fun LoginScreen() {
                 colors = ButtonDefaults.buttonColors(Color(207,6,246)),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Row() {
+                Row {
                     Text(text = stringResource(id = R.string.button_sign_in).uppercase(),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
@@ -164,7 +164,7 @@ fun LoginScreen() {
     } // fim da column principal
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun DefaultPreview() {
     TripRoomTheme {
