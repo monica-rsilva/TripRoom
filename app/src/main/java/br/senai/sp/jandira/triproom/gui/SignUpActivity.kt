@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.triproom
+package br.senai.sp.jandira.triproom.gui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.triproom.R
 import br.senai.sp.jandira.triproom.ui.theme.TripRoomTheme
 
 class SignUpActivity : ComponentActivity() {

@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.triproom
+package br.senai.sp.jandira.triproom.gui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

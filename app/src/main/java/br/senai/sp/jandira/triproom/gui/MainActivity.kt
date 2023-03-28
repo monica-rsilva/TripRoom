@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.triproom
+package br.senai.sp.jandira.triproom.gui
 
 import android.content.Context
 import android.content.Intent
@@ -21,6 +21,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.triproom.R
+import br.senai.sp.jandira.triproom.components.BottomShape
+import br.senai.sp.jandira.triproom.components.TopShape
 import br.senai.sp.jandira.triproom.ui.theme.TripRoomTheme
 
 class MainActivity : ComponentActivity() {
@@ -53,13 +56,7 @@ fun LoginScreen() {
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
         //inicio da row da forma
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-            Card(modifier = Modifier
-                .width(120.dp)
-                .height(40.dp), shape = RoundedCornerShape(bottomStart = 16.dp),
-            backgroundColor = Color(207,6,240)
-            ) {
-
-            }
+            TopShape()
         } // fim da row da forma
         // inicio da column do login
         Column(modifier = Modifier
@@ -97,7 +94,7 @@ fun LoginScreen() {
                         contentDescription = stringResource(id = R.string.email_description),
                         tint = Color(207,6,240)
                     )
-                }
+                }, colors = TextFieldDefaults.outlinedTextFieldColors(focusedBorderColor = Color(207,6,240), unfocusedBorderColor = Color(207,6,240))
             )
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -115,7 +112,8 @@ fun LoginScreen() {
                         contentDescription = stringResource(id = R.string.password_description),
                         tint = Color(207,6,240)
                     )
-                })
+                }, colors = TextFieldDefaults.outlinedTextFieldColors(focusedBorderColor = Color(207,6,240), unfocusedBorderColor = Color(207,6,240))
+            )
 
             Spacer(modifier = Modifier.height(32.dp))
 
@@ -161,13 +159,7 @@ fun LoginScreen() {
         } // fim da row acoount
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start) {
-            Card(modifier = Modifier
-                .width(120.dp)
-                .height(40.dp), shape = RoundedCornerShape(topEnd = 16.dp),
-                backgroundColor = Color(207,6,240)
-            ) {
-
-            }
+            BottomShape()
         }
     } // fim da column principal
 }
