@@ -1,6 +1,7 @@
 package br.senai.sp.jandira.triproom.gui
 
 import android.os.Bundle
+import android.widget.Toast
 //import android.widget.LinearLayout
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -27,11 +28,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.triproom.R
 import br.senai.sp.jandira.triproom.components.BottomShape
+import br.senai.sp.jandira.triproom.model.User
+import br.senai.sp.jandira.triproom.repository.UserRepository
 import br.senai.sp.jandira.triproom.ui.theme.TripRoomTheme
 
 class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val user = User(
+            userName = "Maria da Silva",
+            email = "Maria@terra.com.br",
+            password = "123456",
+            phone = "(11)99999-9999",
+            isOver18 = true
+        )
+
+        val userRep = UserRepository(this)
+        var id = userRep.save(user)
+
+        Toast.makeText(
+            this,
+            "$id",
+            Toast.LENGTH_LONG
+        ).show()
+
         setContent {
             TripRoomTheme {
                 // A surface container using the 'background' color from the theme
@@ -113,8 +134,9 @@ fun SingUpScreen() {
             Spacer(modifier = Modifier.height(8.dp))
 
             Column(
-                modifier = Modifier.height(405.dp)
-                            .verticalScroll(rememberScrollState())
+                modifier = Modifier
+                    .height(405.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
                 OutlinedTextField(
                     value = "", onValueChange = {},
