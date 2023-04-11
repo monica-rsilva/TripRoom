@@ -1,6 +1,9 @@
 package br.senai.sp.jandira.triproom.gui
 
+import android.content.Context
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 //import android.widget.LinearLayout
 import androidx.activity.ComponentActivity
@@ -11,18 +14,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
+import androidx.compose.runtime.*
 //import androidx.compose.material.icons.Icons
 //import androidx.compose.material.icons.filled.Place
-import androidx.compose.runtime.Composable
-//import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -35,23 +41,6 @@ import br.senai.sp.jandira.triproom.ui.theme.TripRoomTheme
 class SignUpActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val user = User(
-            userName = "Maria da Silva",
-            email = "Maria@terra.com.br",
-            password = "123456",
-            phone = "(11)99999-9999",
-            isOver18 = true
-        )
-
-        val userRep = UserRepository(this)
-        var id = userRep.save(user)
-
-        Toast.makeText(
-            this,
-            "$id",
-            Toast.LENGTH_LONG
-        ).show()
 
         setContent {
             TripRoomTheme {
@@ -69,6 +58,32 @@ class SignUpActivity : ComponentActivity() {
 
 @Composable
 fun SingUpScreen() {
+
+    var photoUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    var userNameState by remember {
+        mutableStateOf("")
+    }
+
+    var phoneUserState by remember {
+        mutableStateOf("")
+    }
+
+    var emailUserState by remember {
+        mutableStateOf("")
+    }
+
+    var passWordState by remember {
+        mutableStateOf("")
+    }
+
+    var over18State by remember {
+        mutableStateOf(false)
+    }
+
+    val context = LocalContext.current
 
     Column(modifier = Modifier.fillMaxSize()) {
         Row(
@@ -139,7 +154,7 @@ fun SingUpScreen() {
                     .verticalScroll(rememberScrollState())
             ) {
                 OutlinedTextField(
-                    value = "", onValueChange = {},
+                    value = userNameState, onValueChange = { userNameState = it },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
                     label = {
@@ -157,9 +172,10 @@ fun SingUpScreen() {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 OutlinedTextField(
-                    value = "", onValueChange = {},
+                    value = phoneUserState, onValueChange = { phoneUserState = it },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
                     label = {
                         Text(text = stringResource(id = R.string.phone))
                     },
@@ -175,9 +191,10 @@ fun SingUpScreen() {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 OutlinedTextField(
-                    value = "", onValueChange = {},
+                    value = emailUserState, onValueChange = { emailUserState = it },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                     label = {
                         Text(text = stringResource(id = R.string.email_label))
                     },
@@ -193,9 +210,10 @@ fun SingUpScreen() {
                 Spacer(modifier = Modifier.height(8.dp))
 
                 OutlinedTextField(
-                    value = "", onValueChange = {},
+                    value = passWordState, onValueChange = { passWordState = it },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
+                    visualTransformation = PasswordVisualTransformation(),
                     label = {
                         Text(text = stringResource(id = R.string.password_label))
                     },
@@ -212,15 +230,29 @@ fun SingUpScreen() {
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Checkbox(checked = false, onCheckedChange = {})
+                    Checkbox(
+                        checked = over18State,
+                        onCheckedChange = {
+                            over18State = it
+                        }
+                    )
                     Text(text = stringResource(id = R.string.over_18))
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        saveUser(
+                            userNameState,
+                            phoneUserState,
+                            emailUserState,
+                            passWordState,
+                            over18State,
+                            context
+                        )
+                    },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(16.dp),
-                    colors = ButtonDefaults.buttonColors(Color(207,6,246))
+                    colors = ButtonDefaults.buttonColors(Color(207, 6, 246))
                 ) {
                     Text(
                         text = "CREATE ACCOUNT",
@@ -236,6 +268,50 @@ fun SingUpScreen() {
         }
     }
 
+}
+
+fun saveUser(
+    userName: String,
+    phone: String,
+    email: String,
+    password: String,
+    isOver18: Boolean,
+    context: Context
+) {
+//    criando um objeto user
+    val newUser = User(
+        id = 0,
+        userName = userName,
+        phone = phone,
+        email = email,
+        password = password,
+        isOver18 = isOver18
+    )
+//    criando uma instancia do repositorio
+    val userRepository = UserRepository(context)
+
+//    verificar se o usuario ja existe
+
+    val user = userRepository.findUserByEmail(email)
+    Log.i("ds3m", "${user.toString()}")
+
+//    Salvar o usuario
+
+    if(user == null){
+        val id = userRepository.save(newUser)
+
+        Toast.makeText(
+            context,
+            "Created User #$id",
+            Toast.LENGTH_LONG
+        ).show()
+    } else {
+        Toast.makeText(
+            context,
+            "User already exists!",
+            Toast.LENGTH_LONG
+        ).show()
+    }
 }
 
 @Preview(showBackground = true, showSystemUi = true)

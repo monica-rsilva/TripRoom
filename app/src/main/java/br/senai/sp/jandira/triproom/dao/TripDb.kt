@@ -6,6 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import br.senai.sp.jandira.triproom.model.User
 
+
 @Database(entities = [User::class], version = 1)
 abstract class TripDb: RoomDatabase() {
 

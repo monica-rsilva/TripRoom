@@ -1,16 +1,19 @@
 package br.senai.sp.jandira.triproom.gui
 
 //import android.content.Context
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 //import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,12 +21,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.triproom.R
 import br.senai.sp.jandira.triproom.components.BottomShape
 import br.senai.sp.jandira.triproom.components.TopShape
+import br.senai.sp.jandira.triproom.model.User
+import br.senai.sp.jandira.triproom.repository.UserRepository
 import br.senai.sp.jandira.triproom.ui.theme.TripRoomTheme
 
 class MainActivity : ComponentActivity() {
@@ -46,11 +52,20 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+
+
 @Composable
 fun LoginScreen() {
 
-    val context = LocalContext.current
+    var emailUserState by remember {
+        mutableStateOf("")
+    }
 
+    var passwordState by remember {
+        mutableStateOf("")
+    }
+
+    val context = LocalContext.current
 
     //Column principal
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
@@ -82,9 +97,10 @@ fun LoginScreen() {
         ) {
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedTextField(
-                value = "", onValueChange = {},
+                value = emailUserState, onValueChange = {emailUserState = it},
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 label = {
                     Text(text = stringResource(id = R.string.email_label))
                 },
@@ -100,9 +116,10 @@ fun LoginScreen() {
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedTextField(
-                value = "", onValueChange = {},
+                value = passwordState, onValueChange = {passwordState = it},
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 label = {
                     Text(text = stringResource(id = R.string.password_label))
                 },
@@ -117,7 +134,9 @@ fun LoginScreen() {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            Button(onClick = { /*TODO*/ },
+            Button(onClick = {
+                             authenticate(emailUserState, passwordState, context)
+            },
                 colors = ButtonDefaults.buttonColors(Color(207,6,246)),
                 shape = RoundedCornerShape(16.dp)
             ) {
@@ -163,6 +182,29 @@ fun LoginScreen() {
         }
     } // fim da column principal
 }
+
+fun authenticate(
+    email: String,
+    password: String,
+    context: Context
+) {
+
+    val userRepository = UserRepository(context)
+
+    val user = userRepository.authenticate(email, password)
+
+    if(user == null){
+        Toast.makeText(
+            context,
+            "User or password is incorrect!",
+            Toast.LENGTH_LONG
+        ).show()
+    } else {
+        val intent = Intent(context,NavigationActivity::class.java)
+        context.startActivity(intent)
+    }
+}
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
