@@ -201,6 +201,8 @@ fun authenticate(
         ).show()
     } else {
         val intent = Intent(context,NavigationActivity::class.java)
+        intent.putExtra("id", user.id)
+        intent.putExtra("name", user.userName)
         context.startActivity(intent)
     }
 }
